@@ -1,15 +1,19 @@
 package bodega.vista;
 
 import bodega.modelo.Clientes;
+import bodega.modelo.Pagos;
 import bodega.modelo.Pedidos;
 import bodega.modelo.Productos;
 import bodega.modelo.Sales;
 import bodega.modelo.Ventas;
 import bodega.service.Service_Cliente;
+import bodega.service.Service_Pago;
 import bodega.service.Service_Pedido;
 import bodega.service.Service_Producto;
+import bodega.service.Service_Sale;
 import bodega.service.Service_Venta;
 import java.util.ArrayList;
+import java.util.List;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
@@ -20,12 +24,14 @@ public class Menu extends javax.swing.JFrame {
     private Service_Producto ServicePro;
     private Service_Pedido ServicePe;
     private Service_Venta ServiceVe;
+    private Service_Sale ServiceSa;
+    private Service_Pago ServicePa;
 
     String Products[] = {"Coca cola", "Inka cola", "Sporade", "Pepsi", "Oro", "Kr", "Guaraná"};
     double precios[] = {5.50,5.50,2.50,8,8,7.50,8.50};
     double precio = 0;
     int cantidad = 0;
-    DefaultTableModel modelo = new DefaultTableModel();
+    DefaultTableModel model = new DefaultTableModel();
     ArrayList<Sales> listaPro = new ArrayList<Sales>();
     
     public Menu() {
@@ -35,14 +41,16 @@ public class Menu extends javax.swing.JFrame {
         ServicePro = new Service_Producto();
         ServicePe = new Service_Pedido();
         ServiceVe = new Service_Venta();
+        ServiceSa = new Service_Sale();
+        ServicePa = new Service_Pago();
         
         DefaultComboBoxModel combobox = new DefaultComboBoxModel(Products);
         products.setModel(combobox);
-        modelo.addColumn("DESCRIPCIÓN");
-        modelo.addColumn("PRECIO U.");
-        modelo.addColumn("CANTIDAD");
-        modelo.addColumn("IMPORTE");
-        actualizarTabla();
+        model.addColumn("DESCRIPCIÓN");
+        model.addColumn("PRECIO U.");
+        model.addColumn("CANTIDAD");
+        model.addColumn("IMPORTE");
+        ActualizarTabla();
         calcularPrecio();
         
     }
@@ -169,14 +177,33 @@ public class Menu extends javax.swing.JFrame {
         jScrollPane1 = new javax.swing.JScrollPane();
         tblMostrar = new javax.swing.JTable();
         btnAgregar = new javax.swing.JButton();
-        btnRegistraBe = new javax.swing.JButton();
-        btnSalir = new javax.swing.JButton();
+        btnRegistraSa = new javax.swing.JButton();
+        btnSalirP = new javax.swing.JButton();
         btnNuevo = new javax.swing.JButton();
         P_PAGOS = new javax.swing.JPanel();
         jPanel18 = new javax.swing.JPanel();
-        btnSalir1 = new javax.swing.JButton();
-        btnRegistraBe1 = new javax.swing.JButton();
+        btnSalirPa = new javax.swing.JButton();
+        btnRegistraPa = new javax.swing.JButton();
         jPanel19 = new javax.swing.JPanel();
+        jLabel40 = new javax.swing.JLabel();
+        jLabel44 = new javax.swing.JLabel();
+        txtIdPago = new javax.swing.JTextField();
+        jLabel45 = new javax.swing.JLabel();
+        txtMontoPagado = new javax.swing.JTextField();
+        jLabel46 = new javax.swing.JLabel();
+        jLabel47 = new javax.swing.JLabel();
+        txtMontoPagar = new javax.swing.JTextField();
+        txtTipoPa = new javax.swing.JTextField();
+        jLabel49 = new javax.swing.JLabel();
+        txtFechaPa = new javax.swing.JTextField();
+        jLabel50 = new javax.swing.JLabel();
+        txtIdC = new javax.swing.JTextField();
+        jLabel20 = new javax.swing.JLabel();
+        jLabel48 = new javax.swing.JLabel();
+        btnNuevoPa = new javax.swing.JButton();
+        btnReportePa = new javax.swing.JButton();
+        jScrollPane2 = new javax.swing.JScrollPane();
+        tblReporte = new javax.swing.JTable();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -863,11 +890,11 @@ public class Menu extends javax.swing.JFrame {
 
         jLabel37.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
         jLabel37.setText("PRODUCTO");
-        jPanel14.add(jLabel37, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 50, 80, 30));
+        jPanel14.add(jLabel37, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 50, 80, 30));
 
         jLabel22.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
         jLabel22.setText("CANTIDAD");
-        jPanel14.add(jLabel22, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 110, 80, 30));
+        jPanel14.add(jLabel22, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 110, 80, 30));
 
         spnCantidad.setModel(new javax.swing.SpinnerNumberModel(1, 1, 50, 1));
         spnCantidad.addChangeListener(new javax.swing.event.ChangeListener() {
@@ -875,7 +902,7 @@ public class Menu extends javax.swing.JFrame {
                 spnCantidadStateChanged(evt);
             }
         });
-        jPanel14.add(spnCantidad, new org.netbeans.lib.awtextra.AbsoluteConstraints(120, 110, 70, 30));
+        jPanel14.add(spnCantidad, new org.netbeans.lib.awtextra.AbsoluteConstraints(130, 110, 70, 30));
 
         products.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "-- SELECCIONE--", "Item 2", "Item 3", "Item 4" }));
         products.addActionListener(new java.awt.event.ActionListener() {
@@ -883,7 +910,7 @@ public class Menu extends javax.swing.JFrame {
                 productsActionPerformed(evt);
             }
         });
-        jPanel14.add(products, new org.netbeans.lib.awtextra.AbsoluteConstraints(120, 50, 130, 30));
+        jPanel14.add(products, new org.netbeans.lib.awtextra.AbsoluteConstraints(130, 50, 130, 30));
 
         jLabel38.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel38.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/refresco.png"))); // NOI18N
@@ -935,7 +962,7 @@ public class Menu extends javax.swing.JFrame {
         ));
         jScrollPane1.setViewportView(tblMostrar);
 
-        jPanel13.add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 200, 670, 110));
+        jPanel13.add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 200, 670, 100));
 
         btnAgregar.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
         btnAgregar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/boton-agregar (1).png"))); // NOI18N
@@ -948,25 +975,25 @@ public class Menu extends javax.swing.JFrame {
         });
         jPanel13.add(btnAgregar, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 390, 150, 50));
 
-        btnRegistraBe.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
-        btnRegistraBe.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/lista-del-portapapeles (1).png"))); // NOI18N
-        btnRegistraBe.setText("REGISTRAR");
-        btnRegistraBe.addActionListener(new java.awt.event.ActionListener() {
+        btnRegistraSa.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
+        btnRegistraSa.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/lista-del-portapapeles (1).png"))); // NOI18N
+        btnRegistraSa.setText("REGISTRAR");
+        btnRegistraSa.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnRegistraBeActionPerformed(evt);
+                btnRegistraSaActionPerformed(evt);
             }
         });
-        jPanel13.add(btnRegistraBe, new org.netbeans.lib.awtextra.AbsoluteConstraints(200, 390, 170, 50));
+        jPanel13.add(btnRegistraSa, new org.netbeans.lib.awtextra.AbsoluteConstraints(200, 390, 170, 50));
 
-        btnSalir.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
-        btnSalir.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/hogar (1).png"))); // NOI18N
-        btnSalir.setText("INICIO");
-        btnSalir.addActionListener(new java.awt.event.ActionListener() {
+        btnSalirP.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
+        btnSalirP.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/hogar (1).png"))); // NOI18N
+        btnSalirP.setText("INICIO");
+        btnSalirP.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnSalirActionPerformed(evt);
+                btnSalirPActionPerformed(evt);
             }
         });
-        jPanel13.add(btnSalir, new org.netbeans.lib.awtextra.AbsoluteConstraints(560, 390, 130, 50));
+        jPanel13.add(btnSalirP, new org.netbeans.lib.awtextra.AbsoluteConstraints(560, 390, 130, 50));
 
         btnNuevo.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
         btnNuevo.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/agregar-archivo.png"))); // NOI18N
@@ -996,41 +1023,109 @@ public class Menu extends javax.swing.JFrame {
         jPanel18.setBackground(new java.awt.Color(239, 176, 201));
         jPanel18.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
-        btnSalir1.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
-        btnSalir1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/hogar (1).png"))); // NOI18N
-        btnSalir1.setText("INICIO");
-        btnSalir1.addActionListener(new java.awt.event.ActionListener() {
+        btnSalirPa.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
+        btnSalirPa.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/hogar (1).png"))); // NOI18N
+        btnSalirPa.setText("INICIO");
+        btnSalirPa.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnSalir1ActionPerformed(evt);
+                btnSalirPaActionPerformed(evt);
             }
         });
-        jPanel18.add(btnSalir1, new org.netbeans.lib.awtextra.AbsoluteConstraints(560, 390, 130, 50));
+        jPanel18.add(btnSalirPa, new org.netbeans.lib.awtextra.AbsoluteConstraints(560, 390, 130, 50));
 
-        btnRegistraBe1.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
-        btnRegistraBe1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/lista-del-portapapeles (1).png"))); // NOI18N
-        btnRegistraBe1.setText("REGISTRAR");
-        btnRegistraBe1.addActionListener(new java.awt.event.ActionListener() {
+        btnRegistraPa.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
+        btnRegistraPa.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/lista-del-portapapeles (1).png"))); // NOI18N
+        btnRegistraPa.setText("REGISTRAR");
+        btnRegistraPa.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnRegistraBe1ActionPerformed(evt);
+                btnRegistraPaActionPerformed(evt);
             }
         });
-        jPanel18.add(btnRegistraBe1, new org.netbeans.lib.awtextra.AbsoluteConstraints(200, 390, 170, 50));
+        jPanel18.add(btnRegistraPa, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 390, 170, 50));
 
         jPanel19.setBackground(new java.awt.Color(239, 176, 201));
         jPanel19.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "REALICE SU PAGO", javax.swing.border.TitledBorder.CENTER, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Tahoma", 1, 24))); // NOI18N
+        jPanel19.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
-        javax.swing.GroupLayout jPanel19Layout = new javax.swing.GroupLayout(jPanel19);
-        jPanel19.setLayout(jPanel19Layout);
-        jPanel19Layout.setHorizontalGroup(
-            jPanel19Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 658, Short.MAX_VALUE)
-        );
-        jPanel19Layout.setVerticalGroup(
-            jPanel19Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 143, Short.MAX_VALUE)
-        );
+        jLabel40.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        jLabel40.setText("ID CLIENTE");
+        jPanel19.add(jLabel40, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 110, 80, 30));
 
-        jPanel18.add(jPanel19, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 10, 670, 180));
+        jLabel44.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        jLabel44.setText("ID PAGO");
+        jPanel19.add(jLabel44, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 50, 80, 30));
+        jPanel19.add(txtIdPago, new org.netbeans.lib.awtextra.AbsoluteConstraints(120, 50, 60, 30));
+
+        jLabel45.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        jLabel45.setText("FECHA PAGO");
+        jPanel19.add(jLabel45, new org.netbeans.lib.awtextra.AbsoluteConstraints(260, 170, 90, 30));
+        jPanel19.add(txtMontoPagado, new org.netbeans.lib.awtextra.AbsoluteConstraints(380, 110, 120, 30));
+
+        jLabel46.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        jLabel46.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/las-compras-en-linea.png"))); // NOI18N
+        jLabel46.setBorder(javax.swing.BorderFactory.createTitledBorder(""));
+        jPanel19.add(jLabel46, new org.netbeans.lib.awtextra.AbsoluteConstraints(520, 60, -1, -1));
+
+        jLabel47.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        jLabel47.setText("MONTO A PAGAR");
+        jPanel19.add(jLabel47, new org.netbeans.lib.awtextra.AbsoluteConstraints(260, 50, 110, 30));
+        jPanel19.add(txtMontoPagar, new org.netbeans.lib.awtextra.AbsoluteConstraints(380, 50, 120, 30));
+        jPanel19.add(txtTipoPa, new org.netbeans.lib.awtextra.AbsoluteConstraints(120, 170, 120, 30));
+
+        jLabel49.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        jLabel49.setText("MONTO PAGADO");
+        jPanel19.add(jLabel49, new org.netbeans.lib.awtextra.AbsoluteConstraints(260, 110, 110, 30));
+        jPanel19.add(txtFechaPa, new org.netbeans.lib.awtextra.AbsoluteConstraints(380, 170, 120, 30));
+
+        jLabel50.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        jLabel50.setText("TIPO PAGO");
+        jPanel19.add(jLabel50, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 170, 80, 30));
+        jPanel19.add(txtIdC, new org.netbeans.lib.awtextra.AbsoluteConstraints(120, 110, 60, 30));
+
+        jLabel20.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        jLabel20.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/pagar.png"))); // NOI18N
+        jPanel19.add(jLabel20, new org.netbeans.lib.awtextra.AbsoluteConstraints(190, 50, 50, 30));
+
+        jLabel48.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        jLabel48.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/cliente.png"))); // NOI18N
+        jPanel19.add(jLabel48, new org.netbeans.lib.awtextra.AbsoluteConstraints(190, 110, 50, 30));
+
+        jPanel18.add(jPanel19, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 10, 670, 230));
+
+        btnNuevoPa.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
+        btnNuevoPa.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/agregar-archivo.png"))); // NOI18N
+        btnNuevoPa.setText("NUEVO");
+        btnNuevoPa.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnNuevoPaActionPerformed(evt);
+            }
+        });
+        jPanel18.add(btnNuevoPa, new org.netbeans.lib.awtextra.AbsoluteConstraints(220, 390, 130, 50));
+
+        btnReportePa.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
+        btnReportePa.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/reporte.png"))); // NOI18N
+        btnReportePa.setText("REPORTE");
+        btnReportePa.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnReportePaActionPerformed(evt);
+            }
+        });
+        jPanel18.add(btnReportePa, new org.netbeans.lib.awtextra.AbsoluteConstraints(380, 390, 150, 50));
+
+        tblReporte.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+                {null, null, null, null, null, null},
+                {null, null, null, null, null, null},
+                {null, null, null, null, null, null},
+                {null, null, null, null, null, null}
+            },
+            new String [] {
+                "ID PAGO", "ID CLIENTE", "TIPO PAGO", "MONTO A PAGAR", "MONTO PAGADO", "FECHA PAGO"
+            }
+        ));
+        jScrollPane2.setViewportView(tblReporte);
+
+        jPanel18.add(jScrollPane2, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 260, 670, 100));
 
         javax.swing.GroupLayout P_PAGOSLayout = new javax.swing.GroupLayout(P_PAGOS);
         P_PAGOS.setLayout(P_PAGOSLayout);
@@ -1338,7 +1433,7 @@ public class Menu extends javax.swing.JFrame {
 
     private void btnAgregarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAgregarActionPerformed
         Sales vent = new Sales();
-        vent.setId(products.getSelectedIndex());
+        vent.setIdSale(products.getSelectedIndex());
         vent.setDescripcion(products.getSelectedItem().toString());
         vent.setPrecio(precio);
         vent.setCantidad(cantidad);
@@ -1346,36 +1441,75 @@ public class Menu extends javax.swing.JFrame {
         if(!buscarVenta(vent)){
            listaPro.add(vent); 
         }
-        actualizarTabla();
+        ActualizarTabla();
         borrar();
     }//GEN-LAST:event_btnAgregarActionPerformed
 
-    private void btnRegistraBeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRegistraBeActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_btnRegistraBeActionPerformed
+    private void btnRegistraSaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRegistraSaActionPerformed
+        int idSa = products.getSelectedIndex();
+        String des = products.getSelectedItem().toString();
+        double pre = precio;
+        int cant = cantidad;
+        double imp = (precio*cantidad);
+        double sub = Double.parseDouble(lblSub.getText());
+        double igv = Double.parseDouble(lblIgv.getText());
+        double total = Double.parseDouble(lblTotal.getText());
 
-    private void btnSalirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSalirActionPerformed
+        Sales sales = new Sales(idSa, des, pre, cant, imp, sub, igv, total);
+        ServiceSa.IngresarSaleAlSQL(sales);
+        ServiceSa = new Service_Sale();
+    }//GEN-LAST:event_btnRegistraSaActionPerformed
+
+    private void btnSalirPActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSalirPActionPerformed
         jTabbedPane2.setSelectedIndex(0);
-    }//GEN-LAST:event_btnSalirActionPerformed
+    }//GEN-LAST:event_btnSalirPActionPerformed
 
     private void btnNuevoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnNuevoActionPerformed
-        DefaultTableModel model = (DefaultTableModel) tblMostrar.getModel();
-        while (model.getRowCount() > 0) {
-        model.removeRow(0);
+        DefaultTableModel mod = (DefaultTableModel) tblMostrar.getModel();
+        while (mod.getRowCount() > 0) {
+        mod.removeRow(0);        
         }
+        lblSub.setText("S/. 0.0 soles");
+        lblIgv.setText("S/. 0.0 soles");
+        lblTotal.setText("S/. 0.0 soles");
     }//GEN-LAST:event_btnNuevoActionPerformed
 
-    private void btnSalir1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSalir1ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_btnSalir1ActionPerformed
+    private void btnSalirPaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSalirPaActionPerformed
+        jTabbedPane2.setSelectedIndex(0);
+    }//GEN-LAST:event_btnSalirPaActionPerformed
 
-    private void btnRegistraBe1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRegistraBe1ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_btnRegistraBe1ActionPerformed
+    private void btnRegistraPaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRegistraPaActionPerformed
+        int idPa = Integer.parseInt(txtIdPago.getText());
+        int IdC = Integer.parseInt(txtIdC.getText());
+        String tipoPa = txtTipoPa.getText();
+        double montoPagar = Double.parseDouble(txtMontoPagar.getText());
+        double montoPagado = Double.parseDouble(txtMontoPagado.getText());
+        String fePa = txtFechaPa.getText();
+
+        Pagos pagos = new Pagos(idPa, IdC, tipoPa, montoPagar, montoPagado, fePa);
+        ServicePa.IngresarPagoAlSQL(pagos);
+        ServicePa = new Service_Pago();
+
+        txtIdPago.setText("");
+        txtIdC.setText("");
+        txtTipoPa.setText("");
+        txtMontoPagar.setText("");
+        txtMontoPagado.setText("");
+        txtFechaPa.setText("");
+        txtIdPago.requestFocus();
+    }//GEN-LAST:event_btnRegistraPaActionPerformed
+
+    private void btnNuevoPaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnNuevoPaActionPerformed
+        
+    }//GEN-LAST:event_btnNuevoPaActionPerformed
+
+    private void btnReportePaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnReportePaActionPerformed
+        reporteTabla();
+    }//GEN-LAST:event_btnReportePaActionPerformed
 
     public boolean buscarVenta(Sales nueva){
         for (Sales s : listaPro) {
-            if (s.getId()==nueva.getId()){
+            if (s.getIdSale()==nueva.getIdSale()){
                 int nuevaCantidad = s.getCantidad()+nueva.getCantidad();
                 s.setCantidad(nuevaCantidad);
                 s.setImporte(s.getPrecio()*nuevaCantidad);
@@ -1384,9 +1518,12 @@ public class Menu extends javax.swing.JFrame {
         }
         return false;
     }
+    
     public void borrar(){
         precio=0;
         cantidad=1;
+        lblPrecio.setText(aMoneda(0));
+        lblImporte.setText(aMoneda(0));
         products.setSelectedIndex(0);
         spnCantidad.setValue(1);
         calcularPrecio();
@@ -1403,9 +1540,9 @@ public class Menu extends javax.swing.JFrame {
         return "S/. "+ Math.round(precio*100.0)/100.0 + " soles";
     }
     
-    public void actualizarTabla(){
-        while(modelo.getRowCount()>0){
-                modelo.removeRow(0);
+    public void ActualizarTabla(){
+        while(model.getRowCount()>0){
+                model.removeRow(0);
         } 
         double subtotal=0;
         for (Sales s : listaPro) {
@@ -1415,15 +1552,43 @@ public class Menu extends javax.swing.JFrame {
         x[2] = s.getCantidad();
         x[3] = aMoneda(s.getImporte());
         subtotal += s.getImporte();
-        modelo.addRow(x);
+        model.addRow(x);
         }
         double  igv=subtotal*0.18;
         double total = subtotal + igv;
         lblSub.setText(aMoneda(subtotal));
         lblIgv.setText(aMoneda(igv));
         lblTotal.setText(aMoneda(total));
-        tblMostrar.setModel(modelo);
+        tblMostrar.setModel(model);
     }
+    
+    public void reporteTabla() {
+        List<Pagos> listaPagos = ServicePa.reporteDeSQL();
+        
+        DefaultTableModel modelo = new DefaultTableModel();
+        
+        modelo.addColumn("ID PAGO");
+        modelo.addColumn("ID CLIENTE");
+        modelo.addColumn("TIPO PAGO");
+        modelo.addColumn("MONTO A PAGAR");
+        modelo.addColumn("MONTO PAGADO");
+        modelo.addColumn("FECHA DE PAGOo");
+
+        for (Pagos pago : listaPagos) {
+            Object[] fila = {
+                    pago.getIdPago(),
+                    pago.getIdCliente(),
+                    pago.getTipoPa(),
+                    pago.getMontoPagar(),
+                    pago.getMontoPagado(),
+                    pago.getFechaPa()
+            };
+            modelo.addRow(fila);
+        }
+
+        tblReporte.setModel(modelo);
+    }
+
     
     public static void main(String args[]) {
         /* Set the Nimbus look and feel */
@@ -1477,15 +1642,17 @@ public class Menu extends javax.swing.JFrame {
     private javax.swing.JButton btnEliminarPro;
     private javax.swing.JButton btnEliminarVe;
     private javax.swing.JButton btnNuevo;
-    private javax.swing.JButton btnRegistraBe;
-    private javax.swing.JButton btnRegistraBe1;
+    private javax.swing.JButton btnNuevoPa;
+    private javax.swing.JButton btnRegistraPa;
+    private javax.swing.JButton btnRegistraSa;
     private javax.swing.JButton btnRegistrarCli;
     private javax.swing.JButton btnRegistrarPe;
     private javax.swing.JButton btnRegistrarPro;
     private javax.swing.JButton btnRegistrarVe;
-    private javax.swing.JButton btnSalir;
-    private javax.swing.JButton btnSalir1;
+    private javax.swing.JButton btnReportePa;
     private javax.swing.JButton btnSalirCli;
+    private javax.swing.JButton btnSalirP;
+    private javax.swing.JButton btnSalirPa;
     private javax.swing.JButton btnSalirPe;
     private javax.swing.JButton btnSalirPro;
     private javax.swing.JButton btnSalirVe;
@@ -1502,6 +1669,7 @@ public class Menu extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel18;
     private javax.swing.JLabel jLabel19;
     private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel20;
     private javax.swing.JLabel jLabel21;
     private javax.swing.JLabel jLabel22;
     private javax.swing.JLabel jLabel23;
@@ -1523,10 +1691,18 @@ public class Menu extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel38;
     private javax.swing.JLabel jLabel39;
     private javax.swing.JLabel jLabel4;
+    private javax.swing.JLabel jLabel40;
     private javax.swing.JLabel jLabel41;
     private javax.swing.JLabel jLabel42;
     private javax.swing.JLabel jLabel43;
+    private javax.swing.JLabel jLabel44;
+    private javax.swing.JLabel jLabel45;
+    private javax.swing.JLabel jLabel46;
+    private javax.swing.JLabel jLabel47;
+    private javax.swing.JLabel jLabel48;
+    private javax.swing.JLabel jLabel49;
     private javax.swing.JLabel jLabel5;
+    private javax.swing.JLabel jLabel50;
     private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel7;
     private javax.swing.JLabel jLabel8;
@@ -1551,6 +1727,7 @@ public class Menu extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel8;
     private javax.swing.JPanel jPanel9;
     private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JSeparator jSeparator1;
     private javax.swing.JSeparator jSeparator2;
     private javax.swing.JTabbedPane jTabbedPane1;
@@ -1563,26 +1740,33 @@ public class Menu extends javax.swing.JFrame {
     private javax.swing.JComboBox<String> products;
     private javax.swing.JSpinner spnCantidad;
     private javax.swing.JTable tblMostrar;
+    private javax.swing.JTable tblReporte;
     private javax.swing.JToggleButton tbtnMostrar;
     private javax.swing.JTextField txtApellidoCli;
     private javax.swing.JTextField txtClientePe;
     private javax.swing.JTextField txtDescriPro;
     private javax.swing.JTextField txtFechaCli;
+    private javax.swing.JTextField txtFechaPa;
     private javax.swing.JTextField txtFechaPe;
     private javax.swing.JTextField txtFechaPro;
     private javax.swing.JTextField txtFechaRegPe;
     private javax.swing.JTextField txtFechaRegVe;
     private javax.swing.JTextField txtFechaVe;
+    private javax.swing.JTextField txtIdC;
     private javax.swing.JTextField txtIdCliente;
+    private javax.swing.JTextField txtIdPago;
     private javax.swing.JTextField txtIdPedido;
     private javax.swing.JTextField txtIdProducto;
     private javax.swing.JTextField txtIdVenta;
+    private javax.swing.JTextField txtMontoPagado;
+    private javax.swing.JTextField txtMontoPagar;
     private javax.swing.JTextField txtNombreCli;
     private javax.swing.JTextField txtNombrePro;
     private javax.swing.JTextField txtPrecioPro;
     private javax.swing.JTextField txtProductoPe;
     private javax.swing.JTextField txtProductoVe;
     private javax.swing.JTextField txtTelefonoCli;
+    private javax.swing.JTextField txtTipoPa;
     private javax.swing.JTextField txtTotalVe;
     // End of variables declaration//GEN-END:variables
 }
